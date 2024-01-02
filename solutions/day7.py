@@ -21,6 +21,17 @@ def get_type(card_count):
         "Five of a kind": 7
     }
 
+    if len(card_count) > 1:
+        if "J" in card_count:
+            J_count = card_count["J"]
+            del card_count["J"]
+
+            max_count = max(card_count.values())
+            for card in card_count:
+                if card_count[card] == max_count:
+                    card_count[card] += J_count
+                    break
+
     max_count = max(card_count.values())
 
     # The length of card_count is the number of unique cards in the hand
@@ -43,7 +54,7 @@ def get_type(card_count):
 
 
 def is_hand_sorted(hand_a, hand_b):
-    LABELS = {"2": 1, "3": 2, "4": 3, "5": 4, "6": 5, "7": 6, "8": 7, "9": 8, "T": 9, "J": 10, "Q": 11, "K": 12, "A": 13}
+    LABELS = {"2": 1, "3": 2, "4": 3, "5": 4, "6": 5, "7": 6, "8": 7, "9": 8, "T": 9, "J": 10 if curr_part == 1 else 0, "Q": 11, "K": 12, "A": 13}
 
     type_a, type_b = get_type(count_cards(hand_a)), get_type(count_cards(hand_b))
     label_a, label_b = LABELS[hand_a[0]], LABELS[hand_b[0]]
@@ -87,7 +98,7 @@ def merge_sort(arr):
     return result
 
 
-def part1(data):
+def answer(data):
     arr = [line.split()[0] for line in data]
     sorted_hands = merge_sort(arr)
 
@@ -105,7 +116,12 @@ def part1(data):
 
 with open("../inputs/day7.txt") as file:
     data = file.read().strip().split("\n")
-    part1 = part1(data)
-    # part2 = part2(data)
+
+    curr_part = 1
+    part1 = answer(data)
+
+    curr_part = 2
+    part2 = answer(data)
+
     print(f"Part 1: {part1}")
-    # print(f"Part 2: {part2}")
+    print(f"Part 2: {part2}")
