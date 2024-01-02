@@ -1,37 +1,27 @@
+from math import sqrt, floor, ceil
+
+
+def get_count(T, D):
+    t2 = floor((T + sqrt(T*T - 4*D)) / 2)
+    t1 = ceil((T - sqrt(T*T - 4*D)) / 2)
+    return t2 - t1 + 1
+
+
 def part1(times, distances):
     result = 1
 
     for i in range(len(times)):
-        count = 0
         T = times[i]
-        D = distances[i]
-
-        for t in range(T + 1):
-            my_distance = (T - t) * t
-            if my_distance > D:
-                count += 1
-            elif my_distance <= D and count > 0:
-                break
-
-        result *= count
+        D = distances[i] + 1
+        result *= get_count(T, D)
 
     return result
 
 
 def part2(times, distances):
-    count = 0
-
     T = int("".join([str(t) for t in times]))
-    D = int("".join([str(d) for d in distances]))
-
-    for t in range(T + 1):
-        my_distance = (T - t) * t
-        if my_distance > D:
-            count += 1
-        elif my_distance <= D and count > 0:
-            break
-
-    return count
+    D = int("".join([str(d) for d in distances])) + 1
+    return get_count(T, D)
 
 
 with open("../inputs/day6.txt") as file:
